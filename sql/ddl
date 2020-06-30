@@ -1,0 +1,35 @@
+CREATE TABLE shopping.cart (
+	cart_id serial NOT NULL,
+	cust_id int4 NOT NULL,
+	cart_status bool NOT NULL,
+	total_amount_order float8 NOT NULL,
+	crtn_ts timestamp NOT NULL
+);
+
+
+
+CREATE TABLE shopping.cart_list (
+	cart_id int4 NOT NULL,
+	item_id int4 NOT NULL,
+	item_qty int4 NOT NULL,
+	total_item_price float8 NOT NULL,
+	cart_list_id int4 NULL
+);
+
+
+
+CREATE TABLE shopping.customer (
+	cust_id serial NOT NULL,
+	cust_name varchar(100) NOT NULL,
+	CONSTRAINT customer_pkey PRIMARY KEY (cust_id)
+);
+
+
+CREATE TABLE shopping.item (
+	item_id serial NOT NULL,
+	item_name varchar(100) NOT NULL,
+	is_available bool NOT NULL,
+	stock_qty int4 NULL,
+	price_per_unit float8 NOT NULL,
+	CONSTRAINT item_pkey PRIMARY KEY (item_id)
+);

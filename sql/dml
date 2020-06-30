@@ -1,0 +1,6 @@
+INSERT INTO shopping.item (item_id, item_name, is_available, stock_qty, price_per_unit) VALUES(1, 'A', true, 70, 21.3);
+INSERT INTO shopping.item (item_id, item_name, is_available, stock_qty, price_per_unit) VALUES(2, 'B', true, 23, 121.22);
+INSERT INTO shopping.item (item_id, item_name, is_available, stock_qty, price_per_unit) VALUES(3, 'C', true, 40, 32.5);
+INSERT INTO shopping.item (item_id, item_name, is_available, stock_qty, price_per_unit) VALUES(4, 'D', true, 102, 11.2);
+INSERT INTO shopping.item (item_id, item_name, is_available, stock_qty, price_per_unit) VALUES(5, 'E', true, 23, 42.11);
+INSERT INTO shopping.item (item_id, item_name, is_available, stock_qty, price_per_unit) VALUES(6, 'F', true, 30, 45.9);

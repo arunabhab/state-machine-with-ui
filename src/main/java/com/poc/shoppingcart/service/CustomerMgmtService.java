@@ -16,9 +16,9 @@ import com.poc.shoppingcart.entity.Customer;
 @Component
 @Service
 public interface CustomerMgmtService {
-	
-	public List<Customer> retrieveData();
-	
-	public int putData(Customer cust);
+		
+	public Customer putData(Customer cust);
+
+	Customer retrieveCustomer(String name);
 
 }

@@ -11,4 +11,6 @@ import com.poc.shoppingcart.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Object> {
 	
+	Customer findByCustName(String custName);
+	
 }

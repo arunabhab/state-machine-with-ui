@@ -119,21 +119,31 @@ public class Runner implements ApplicationRunner {
 		}
 
 		
-		StateMachine<OrderStates, OrderEvents> paymentStateMachine = orderService.pay(order.getId(), UUID.randomUUID().toString());
-		System.out.println("after calling pay() : " + paymentStateMachine.getState().getId().name());
-		System.out.println("Order : "+ orderService.byId(order.getId()));
-		
-		StateMachine<OrderStates, OrderEvents> fulfilledStateMachine = orderService.fulfill(order.getId());
-		System.out.println("after calling fulfill() : "+ fulfilledStateMachine.getState().getId().name());
-		System.out.println("Order : " + orderService.byId(order.getId()));
-		
-		StateMachine<OrderStates, OrderEvents> checkoutStateMachine = orderService.checkOut(order.getId());
-		System.out.println("after calling checkOut() : " + checkoutStateMachine.getState().getId().name());
-		System.out.println("Order : "+ orderService.byId(order.getId()));
-		
-		StateMachine<OrderStates, OrderEvents> saveInCartTempStateMachine = orderService.saveInCartTemp(order.getId());
-		System.out.println("after calling checkOut() : " + saveInCartTempStateMachine.getState().getId().name());
-		System.out.println("Order : "+ orderService.byId(order.getId()));
+		/*
+		 * StateMachine<OrderStates, OrderEvents> paymentStateMachine =
+		 * orderService.pay(order.getId(), UUID.randomUUID().toString());
+		 * System.out.println("after calling pay() : " +
+		 * paymentStateMachine.getState().getId().name());
+		 * System.out.println("Order : "+ orderService.byId(order.getId()));
+		 * 
+		 * StateMachine<OrderStates, OrderEvents> fulfilledStateMachine =
+		 * orderService.fulfill(order.getId());
+		 * System.out.println("after calling fulfill() : "+
+		 * fulfilledStateMachine.getState().getId().name());
+		 * System.out.println("Order : " + orderService.byId(order.getId()));
+		 * 
+		 * StateMachine<OrderStates, OrderEvents> checkoutStateMachine =
+		 * orderService.checkOut(order.getId());
+		 * System.out.println("after calling checkOut() : " +
+		 * checkoutStateMachine.getState().getId().name());
+		 * System.out.println("Order : "+ orderService.byId(order.getId()));
+		 * 
+		 * StateMachine<OrderStates, OrderEvents> saveInCartTempStateMachine =
+		 * orderService.saveInCartTemp(order.getId());
+		 * System.out.println("after calling checkOut() : " +
+		 * saveInCartTempStateMachine.getState().getId().name());
+		 * System.out.println("Order : "+ orderService.byId(order.getId()));
+		 */
 	}
 
 }

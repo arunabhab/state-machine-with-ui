@@ -5,10 +5,15 @@ package com.poc.shoppingcart.enums;
  *
  */
 public enum OrderEvents {
-	FULFILL,
-	PAY,
-	CANCEL,
+	/*FULFILL,
 	SAVE_TEMP_CART,
 	REGISTER,
-	CHECKOUT
+	CHECKOUT,*/
+	
+	
+	SAVE_CART,
+	RETRIEVE,
+	UPDATE_CART,
+	PAY,
+	CANCEL
 }

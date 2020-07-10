@@ -1,8 +1,9 @@
 package com.poc.shoppingcart.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.poc.shoppingcart.entity.Cart;
 import com.poc.shoppingcart.entity.CartTemp;
 
 /**
@@ -11,5 +12,7 @@ import com.poc.shoppingcart.entity.CartTemp;
  */
 
 public interface CartTempRepository extends JpaRepository<CartTemp, Object> {
-	
+
+	Optional<CartTemp> findByCustId(Integer custId);
+
 }

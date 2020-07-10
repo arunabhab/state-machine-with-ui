@@ -43,17 +43,68 @@ public class OrderService {
 	
 	public Order create(Date when) {
 		long generatedLong = new Random().nextLong();
+
+
 		return this.orderRepository.save(new Order(generatedLong,when, OrderStates.SUBMITTED));
 	}
 	
-	public StateMachine<OrderStates, OrderEvents> pay(Long orderId, String paymentConfirmationNumber){
+	public StateMachine<OrderStates, OrderEvents> saveCart(Long orderId){
+		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
+		
+		Message<OrderEvents> paymentMessage = MessageBuilder.withPayload(OrderEvents.SAVE_CART)
+											.setHeader(ORDER_ID_HEADER , orderId)
+											.build();
+		System.out.println("sm=====");
+		System.out.println(sm);
+
+		sm.sendEvent(paymentMessage);
+		return sm;
+	}
+	
+	public StateMachine<OrderStates, OrderEvents> retrieveCart(Long orderId){
+		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
+		
+		Message<OrderEvents> paymentMessage = MessageBuilder.withPayload(OrderEvents.RETRIEVE)
+											.setHeader(ORDER_ID_HEADER , orderId)
+											.build();
+		
+		sm.sendEvent(paymentMessage);
+		return sm;
+	}
+	
+	public StateMachine<OrderStates, OrderEvents> updateCart(Long orderId){
+		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
+		
+		Message<OrderEvents> paymentMessage = MessageBuilder.withPayload(OrderEvents.UPDATE_CART)
+											.setHeader(ORDER_ID_HEADER , orderId)
+											.build();
+
+		System.out.println("sm=====");
+		System.out.println(sm);
+
+		
+		sm.sendEvent(paymentMessage);
+			return sm;
+	}
+	
+	public StateMachine<OrderStates, OrderEvents> pay(Long orderId){
 		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
 		
 		Message<OrderEvents> paymentMessage = MessageBuilder.withPayload(OrderEvents.PAY)
 											.setHeader(ORDER_ID_HEADER , orderId)
-											.setHeader("paymentConfirmationNumber",paymentConfirmationNumber)
 											.build();
 		
+		sm.sendEvent(paymentMessage);
+		return sm;
+	}
+	
+	public StateMachine<OrderStates, OrderEvents> cancelCart(Long orderId){
+		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
+		
+		Message<OrderEvents> paymentMessage = MessageBuilder.withPayload(OrderEvents.CANCEL)
+											.setHeader(ORDER_ID_HEADER , orderId)
+											.build();
+
 		sm.sendEvent(paymentMessage);
 		return sm;
 	}
@@ -69,37 +120,40 @@ public class OrderService {
 		sm.sendEvent(fulfillmentMessage);
 		return sm;
 	}
-
-	public StateMachine<OrderStates, OrderEvents> checkOut(Long orderId){
-		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
-		//make sure that state is updated before this line came
-		Message<OrderEvents> checkOutMessage = MessageBuilder.withPayload(OrderEvents.CHECKOUT)
-											.setHeader(ORDER_ID_HEADER , orderId)
-											.setHeader("isRegistered", false)
-											.build();
-		
-		sm.sendEvent(checkOutMessage);
-		return sm;
-	}
+	/*
+	 * public StateMachine<OrderStates, OrderEvents> checkOut(Long orderId){
+	 * StateMachine<OrderStates, OrderEvents> sm = this.build(orderId); //make sure
+	 * that state is updated before this line came Message<OrderEvents>
+	 * checkOutMessage = MessageBuilder.withPayload(OrderEvents.CHECKOUT)
+	 * .setHeader(ORDER_ID_HEADER , orderId) .setHeader("isRegistered", false)
+	 * .build();
+	 * 
+	 * sm.sendEvent(checkOutMessage); return sm; }
+	 */
 	
-	public StateMachine<OrderStates, OrderEvents> saveInCartTemp(Long orderId){
-		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
-		//make sure that state is updated before this line came
-		Message<OrderEvents> saveInCartTempMessage = MessageBuilder.withPayload(OrderEvents.SAVE_TEMP_CART)
-											.setHeader(ORDER_ID_HEADER , orderId)
-											.setHeader("isRegistered", false)
-											.build();
-		
-		sm.sendEvent(saveInCartTempMessage);
-		return sm;
-	}
+	/*
+	 * public StateMachine<OrderStates, OrderEvents> saveInCartTemp(Long orderId){
+	 * StateMachine<OrderStates, OrderEvents> sm = this.build(orderId); //make sure
+	 * that state is updated before this line came Message<OrderEvents>
+	 * saveInCartTempMessage =
+	 * MessageBuilder.withPayload(OrderEvents.SAVE_TEMP_CART)
+	 * .setHeader(ORDER_ID_HEADER , orderId) .setHeader("isRegistered", false)
+	 * .build();
+	 * 
+	 * sm.sendEvent(saveInCartTempMessage); return sm; }
+	 */
 	
 	private StateMachine<OrderStates, OrderEvents> build(Long orderId){
 		Order order = this.orderRepository.getOne(orderId); //TODO
 		String orderIdKey = Long.toString(order.getId());
 		StateMachine<OrderStates, OrderEvents> sm  = this.factory.getStateMachine(orderIdKey);
+		StateMachine<OrderStates, OrderEvents> sm1  = this.factory.getStateMachine(orderIdKey);
 		sm.stop(); //if previous cycle is not terminated yet
-
+		
+		System.out.println("SM1=====+=========");
+		System.out.println(sm);
+//		System.out.println();
+		System.out.println(sm1);
 		sm.getStateMachineAccessor()
 		      .doWithAllRegions(new StateMachineFunction<StateMachineAccess<OrderStates,OrderEvents>>() {
 				
@@ -180,4 +234,9 @@ public class OrderService {
 	 * DefaultStateMachineContext<>(order.getOrderState(), null, null, null)); });
 	 * sm.start(); return sm; }
 	 */
+	
+	public Order getOrderDtls(Long orderId) {
+		return orderRepository.getOne(orderId);
+		
+	}
 }

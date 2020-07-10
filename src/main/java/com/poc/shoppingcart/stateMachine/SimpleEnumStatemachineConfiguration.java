@@ -34,14 +34,14 @@ public class SimpleEnumStatemachineConfiguration extends StateMachineConfigurerA
 	@Override
 	public void configure(StateMachineTransitionConfigurer<OrderStates, OrderEvents> transitions) throws Exception {
 		transitions
-				.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.PAID).event(OrderEvents.PAY)
+				/*.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.PAID).event(OrderEvents.PAY)
 				.and()
 				//.withExternal().source(OrderStates.PAID).target(OrderStates.FULFILLED).event(OrderEvents.FULFILL)
 				//.and()
-				/*
+				
 				 * .withExternal().source(OrderStates.PAID).target(OrderStates.FORK_REGISTRATION
 				 * ).event(OrderEvents.CHECKOUT) .and()
-				 */
+				 
 				.withChoice().source(OrderStates.CHOICE_REGISTRATION).first(OrderStates.REGISTERED, guard()).last(OrderStates.UNREGISTERED)
 				.and()
 				.withExternal().source(OrderStates.UNREGISTERED).target(OrderStates.REGISTERED).event(OrderEvents.REGISTER)
@@ -52,28 +52,51 @@ public class SimpleEnumStatemachineConfiguration extends StateMachineConfigurerA
 				.and()
 				.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL)
 				.and()
-				.withExternal().source(OrderStates.PAID).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL);
+				.withExternal().source(OrderStates.PAID).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL);*/
+		
+		.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.CART_SAVED).event(OrderEvents.SAVE_CART)
+		.and()
+		.withExternal().source(OrderStates.CART_SAVED).target(OrderStates.CART_RETRIEVED).event(OrderEvents.RETRIEVE)
+		.and()
+		.withExternal().source(OrderStates.CART_RETRIEVED).target(OrderStates.CART_UPDATED).event(OrderEvents.UPDATE_CART)
+		.and()
+		.withExternal().source(OrderStates.CART_SAVED).target(OrderStates.PAID).event(OrderEvents.PAY)
+		.and()
+		.withExternal().source(OrderStates.CART_UPDATED).target(OrderStates.PAID).event(OrderEvents.PAY)
+		.and()
+		.withExternal().source(OrderStates.CART_RETRIEVED).target(OrderStates.PAID).event(OrderEvents.PAY)
+		.and()
+		.withExternal().source(OrderStates.CART_SAVED).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL)
+		.and()
+		.withExternal().source(OrderStates.CART_RETRIEVED).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL)
+		.and()
+		.withExternal().source(OrderStates.CART_UPDATED).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL)
+		.and()
+		.withExternal().source(OrderStates.PAID).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL);
 	}
-	
+
 	@Override
 	public void configure(StateMachineStateConfigurer<OrderStates, OrderEvents> states) throws Exception {
-		states
-				.withStates()
-				.initial(OrderStates.SUBMITTED)
+		states.withStates().initial(OrderStates.SUBMITTED)
 				.stateEntry(OrderStates.SUBMITTED, new Action<OrderStates, OrderEvents>() {
-					
+
 					@Override
 					public void execute(StateContext<OrderStates, OrderEvents> context) {
 						System.out.println("Entering submitted state");
-						Long orderId = Long.class.cast(context.getExtendedState().getVariables().getOrDefault("orderId", -1L));
+						Long orderId = Long.class
+								.cast(context.getExtendedState().getVariables().getOrDefault("orderId", -1L));
 						System.out.println("Order id is : " + orderId);
 					}
 				})
-				/*.stateEntry(OrderStates.SUBMITTED, context -> {
-					Long orderId = Long.class.cast(context.getExtendedState().getVariables().getOrDefault("orderId", -1L));
-					log.info("orderId is " + orderId + ".");
-					log.info("entering submitted state!");
-				})*/
+				/*
+				 * .stateEntry(OrderStates.SUBMITTED, context -> { Long orderId =
+				 * Long.class.cast(context.getExtendedState().getVariables().getOrDefault(
+				 * "orderId", -1L)); log.info("orderId is " + orderId + ".");
+				 * log.info("entering submitted state!"); })
+				 */
+				.state(OrderStates.CART_SAVED)
+				.state(OrderStates.CART_RETRIEVED)
+				.state(OrderStates.CART_UPDATED)
 				.state(OrderStates.PAID)
 				/*
 				 * .fork(OrderStates.FORK_REGISTRATION) //TODO
@@ -84,39 +107,37 @@ public class SimpleEnumStatemachineConfiguration extends StateMachineConfigurerA
 				 * .parent(OrderStates.CHECK_REGISTRATION) .initial(OrderStates.REGISTERED)
 				 * .end(OrderStates.REGISTERED)
 				 */
-				.choice(OrderStates.CHOICE_REGISTRATION)
-				.end(OrderStates.FULFILLED)
+			//	.choice(OrderStates.CHOICE_REGISTRATION).end(OrderStates.FULFILLED).end(OrderStates.CANCELLED);
 				.end(OrderStates.CANCELLED);
 	}
-	
+
 	@Override
 	public void configure(StateMachineConfigurationConfigurer<OrderStates, OrderEvents> config) throws Exception {
 
 		StateMachineListenerAdapter<OrderStates, OrderEvents> adapter = new StateMachineListenerAdapter<OrderStates, OrderEvents>() {
 			@Override
 			public void stateChanged(State<OrderStates, OrderEvents> from, State<OrderStates, OrderEvents> to) {
-				//log.info(String.format("stateChanged(from: %s, to: %s)", from + "", to + ""));
+				// log.info(String.format("stateChanged(from: %s, to: %s)", from + "", to +
+				// ""));
 			}
 		};
-		config.withConfiguration()
-				.autoStartup(false)
-				.listener(adapter);
+		config.withConfiguration().autoStartup(false).listener(adapter);
 	}
-	
-	@Bean
-	    public Guard<OrderStates, OrderEvents> guard() {
-	        return new Guard<OrderStates, OrderEvents>() {
 
-	            @Override
-	            public boolean evaluate(StateContext<OrderStates, OrderEvents> context) {
-	            	Map<Object, Object> variables = context.getExtendedState().getVariables();
-	                return (ObjectUtils.nullSafeEquals(variables.get("isRegistered"), true));
-	                
-					/*
-					 * context.getStateMachine().sendEvent(Events.CONTINUE); } else {
-					 * context.getStateMachine().sendEvent(Events.FALLBACK); }
-					 */
-	            }
-	        };
-	    }
+	@Bean
+	public Guard<OrderStates, OrderEvents> guard() {
+		return new Guard<OrderStates, OrderEvents>() {
+
+			@Override
+			public boolean evaluate(StateContext<OrderStates, OrderEvents> context) {
+				Map<Object, Object> variables = context.getExtendedState().getVariables();
+				return (ObjectUtils.nullSafeEquals(variables.get("isRegistered"), true));
+
+				/*
+				 * context.getStateMachine().sendEvent(Events.CONTINUE); } else {
+				 * context.getStateMachine().sendEvent(Events.FALLBACK); }
+				 */
+			}
+		};
+	}
 }

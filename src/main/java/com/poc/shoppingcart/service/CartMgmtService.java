@@ -22,6 +22,17 @@ public interface CartMgmtService {
 	
 	public int putData(Cart cust);
 	
-	public CartTemp putDataTemp(Integer custId,String list);
+//	public CartTemp putDataTemp(Integer custId,String list);
+	
+	
+	public CartTemp updateItems(Integer cartId, String itemList);
+	
+	public CartTemp getCart(Integer cartId);
+	
+	public CartTemp getCartByCustId(Integer custId);
+
+	public CartTemp deleteCart(Integer cartId);
+
+	CartTemp createNewCart(Integer custId, Long orderId);
 
 }

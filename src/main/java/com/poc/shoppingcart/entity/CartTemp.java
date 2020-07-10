@@ -46,30 +46,54 @@ public class CartTemp implements Serializable {
 	
 	@Column (name = "CRTN_TS")
 	private Timestamp crtnTs;
+	
+	@Column(name = "ORDER_ID")
+	private Long orderId;
 
-	public CartTemp(Integer cartId, Integer custId, String itemList, Timestamp crtnTs) {
-		super();
+
+ 
+	
+	public CartTemp(Integer cartId, Integer custId, String itemList, Timestamp crtnTs, Long orderId) {
 		this.cartId = cartId;
 		this.custId = custId;
 		this.itemList = itemList;
 		this.crtnTs = crtnTs;
+		this.orderId = orderId;
 	}
-	
-	public CartTemp(Integer custId, String itemList, Timestamp crtnTs) {
+
+	public CartTemp(Integer custId, String itemList, Timestamp crtnTs,Long orderId) {
 		this.custId = custId;
 		this.itemList = itemList;
 		this.crtnTs = crtnTs;
+		this.orderId = orderId;
 	}
 
+	public CartTemp(Integer custId,Timestamp crtnTs,Long orderId) {
+		this.custId = custId;
+		this.crtnTs = crtnTs;
+		this.orderId = orderId;
+	}
+	
 	public CartTemp() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+
 	@Override
 	public String toString() {
 		return "CartTemp [cartId=" + cartId + ", custId=" + custId + ", itemList=" + itemList + ", crtnTs=" + crtnTs
-				+ "]";
+				+ ", orderId=" + orderId + "]";
+	}
+
+	
+	
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 
 	public Integer getCartId() {

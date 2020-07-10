@@ -49,6 +49,24 @@ public class Order {
 		this.id= id;  //new Long(123213);
 	}
 
+	
+	
+	public Date getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(Date datetime) {
+		this.datetime = datetime;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -70,6 +88,11 @@ public class Order {
 
 	public void setOrderState(OrderStates s) {
 		this.state = s.name();
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", datetime=" + datetime + ", state=" + state + "]";
 	}
 
 }

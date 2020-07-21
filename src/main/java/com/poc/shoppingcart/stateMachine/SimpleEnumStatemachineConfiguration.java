@@ -53,8 +53,9 @@ public class SimpleEnumStatemachineConfiguration extends StateMachineConfigurerA
 				.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL)
 				.and()
 				.withExternal().source(OrderStates.PAID).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL);*/
-		
 		.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.CART_SAVED).event(OrderEvents.SAVE_CART)
+		.and()
+		.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.PAID).event(OrderEvents.PAY) //test
 		.and()
 		.withExternal().source(OrderStates.CART_SAVED).target(OrderStates.CART_RETRIEVED).event(OrderEvents.RETRIEVE)
 		.and()
@@ -73,6 +74,16 @@ public class SimpleEnumStatemachineConfiguration extends StateMachineConfigurerA
 		.withExternal().source(OrderStates.CART_UPDATED).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL)
 		.and()
 		.withExternal().source(OrderStates.PAID).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL);
+		//.and()
+		/*.withExternal().source(OrderStates.CART_SAVED1).target(OrderStates.CART_RETRIEVED1).event(OrderEvents.RETRIEVE1)
+		.and()
+		.withExternal().source(OrderStates.CART_RETRIEVED1).target(OrderStates.CART_UPDATED1).event(OrderEvents.UPDATE_CART1)
+		.and()
+		.withExternal().source(OrderStates.CART_SAVED1).target(OrderStates.PAID1).event(OrderEvents.PAY1)
+		.and()
+		.withExternal().source(OrderStates.CART_UPDATED1).target(OrderStates.PAID1).event(OrderEvents.PAY1)
+		.and()
+		.withExternal().source(OrderStates.CART_RETRIEVED1).target(OrderStates.PAID1).event(OrderEvents.PAY1);*/
 	}
 
 	@Override

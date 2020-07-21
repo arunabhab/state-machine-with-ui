@@ -167,16 +167,18 @@ public class MasterDataController {
 
 	}
 
-//	  @RequestMapping(value = "/pay", method = RequestMethod.GET, produces = {
-//	  "application/json", "application/xml" }) public String pay() throws Exception
-//	  {
-//	  
-//	  StateMachine<OrderStates, OrderEvents> paymentStateMachine =
-//	  orderService.pay(order.getId()); System.out.println("after calling pay() : "
-//	  + paymentStateMachine.getState().getId().name()); String s = "Order : " +
-//	  orderService.byId(order.getId());
-//	 * 
-//	 * return s; }
-//	 */
+	@RequestMapping(value = "/pay", method = RequestMethod.POST, produces = {
+	  "application/json", "application/xml" }) public String pay(@RequestParam("custId") Integer custId, 
+			  @RequestParam("orderId") Long orderId) throws Exception
+	  {
+		Order order = orderService.getOrderDtls(orderId);
+	  StateMachine<OrderStates, OrderEvents> paymentStateMachine =
+	  orderService.pay(order.getId()); System.out.println("after calling pay() : "
+	  + paymentStateMachine.getState().getId().name()); String s = "Order : " +
+	  orderService.byId(order.getId());
+	  
+	  return s;
+	  }
+	 
 
 }

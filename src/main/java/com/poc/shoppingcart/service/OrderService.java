@@ -146,14 +146,15 @@ public class OrderService {
 	private StateMachine<OrderStates, OrderEvents> build(Long orderId){
 		Order order = this.orderRepository.getOne(orderId); //TODO
 		String orderIdKey = Long.toString(order.getId());
+		
 		StateMachine<OrderStates, OrderEvents> sm  = this.factory.getStateMachine(orderIdKey);
-		StateMachine<OrderStates, OrderEvents> sm1  = this.factory.getStateMachine(orderIdKey);
+		
 		sm.stop(); //if previous cycle is not terminated yet
 		
 		System.out.println("SM1=====+=========");
 		System.out.println(sm);
 //		System.out.println();
-		System.out.println(sm1);
+		//System.out.println(sm);
 		sm.getStateMachineAccessor()
 		      .doWithAllRegions(new StateMachineFunction<StateMachineAccess<OrderStates,OrderEvents>>() {
 				
@@ -181,7 +182,7 @@ public class OrderService {
 					});
 					
 					//DefaultStateMachineContext<OrderStates, OrderEvents>
-					sma.resetStateMachine(new DefaultStateMachineContext<OrderStates, OrderEvents>(order.getOrderState(), null, null, null));
+					 sma.resetStateMachine(new DefaultStateMachineContext<OrderStates, OrderEvents>(order.getOrderState(), null, null, null));
 				}
 			});
 		

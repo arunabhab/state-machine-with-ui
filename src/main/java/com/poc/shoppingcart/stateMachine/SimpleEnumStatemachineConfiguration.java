@@ -55,6 +55,10 @@ public class SimpleEnumStatemachineConfiguration extends StateMachineConfigurerA
 				.withExternal().source(OrderStates.PAID).target(OrderStates.CANCELLED).event(OrderEvents.CANCEL);*/
 		.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.CART_SAVED).event(OrderEvents.SAVE_CART)
 		.and()
+		.withExternal().source(OrderStates.CART_SAVED).target(OrderStates.REGISTERED).event(OrderEvents.REGISTER)
+		.and()
+		.withExternal().source(OrderStates.REGISTERED).target(OrderStates.ADDRESS_SAVED).event(OrderEvents.SAVE_ADDRESS)
+		.and()
 		.withExternal().source(OrderStates.SUBMITTED).target(OrderStates.PAID).event(OrderEvents.PAY) //test
 		.and()
 		.withExternal().source(OrderStates.CART_SAVED).target(OrderStates.CART_RETRIEVED).event(OrderEvents.RETRIEVE)
@@ -106,6 +110,8 @@ public class SimpleEnumStatemachineConfiguration extends StateMachineConfigurerA
 				 * log.info("entering submitted state!"); })
 				 */
 				.state(OrderStates.CART_SAVED)
+				.state(OrderStates.REGISTERED)
+				.state(OrderStates.ADDRESS_SAVED)
 				.state(OrderStates.CART_RETRIEVED)
 				.state(OrderStates.CART_UPDATED)
 				.state(OrderStates.PAID)

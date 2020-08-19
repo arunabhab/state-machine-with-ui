@@ -33,3 +33,12 @@ CREATE TABLE shopping.item (
 	price_per_unit float8 NOT NULL,
 	CONSTRAINT item_pkey PRIMARY KEY (item_id)
 );
+
+
+//Sayanta
+CREATE TABLE shopping.address (
+	address_id serial NOT NULL,
+	address_pin varchar(100) NOT NULL,
+	cust_id varchar(100) NOT null,
+	CONSTRAINT address_pkey PRIMARY KEY (address_id)
+);

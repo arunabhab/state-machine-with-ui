@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poc.shoppingcart.entity.Address;
 import com.poc.shoppingcart.entity.CartDAO;
 import com.poc.shoppingcart.entity.CartTemp;
+import com.poc.shoppingcart.entity.Customer;
 import com.poc.shoppingcart.entity.Order;
 import com.poc.shoppingcart.enums.OrderEvents;
 import com.poc.shoppingcart.enums.OrderStates;
+import com.poc.shoppingcart.service.AddressMgmtService;
 import com.poc.shoppingcart.service.CartMgmtService;
+import com.poc.shoppingcart.service.CustomerMgmtService;
+import com.poc.shoppingcart.service.CustomerMgmtServiceImpl;
 import com.poc.shoppingcart.service.OrderService;
 
 /**
@@ -32,6 +37,12 @@ public class MasterDataController {
 
 	@Autowired
 	CartMgmtService cartMgmtService;
+	
+	@Autowired
+	CustomerMgmtService custMgmtService;
+	
+	@Autowired
+	AddressMgmtService addressMgmtService;
 
 	@RequestMapping(value = "/createCart", method = RequestMethod.POST, produces = { "application/json",
 			"application/xml" })
@@ -49,6 +60,44 @@ public class MasterDataController {
 		return cartDAO;
 
 	}
+	
+	//page 1
+	@RequestMapping(value = "/registerCust", method = RequestMethod.POST, produces = { "application/json",
+	"application/xml" })
+	public Customer registerCust(
+			@RequestParam("custName") String custName , @RequestParam("orderId") Long orderId ) 
+			throws Exception {
+
+		
+		Customer customer = new Customer();
+		customer.setCustName(custName);
+		customer = custMgmtService.putData(customer);
+		StateMachine<OrderStates, OrderEvents> paymentStateMachine = orderService.saveCust(orderId);
+
+		return customer;
+
+}
+	//page 2
+	@RequestMapping(value = "/registerAddress", method = RequestMethod.POST, produces = { "application/json",
+	"application/xml" })
+	public Address registerAddress(
+			@RequestParam("custId") String custId, @RequestParam("addStr") String addStr
+			, @RequestParam("orderId") Long orderId) 
+			throws Exception {
+
+		
+		Address address = new Address();
+		address.setAddress(addStr);
+		address.setCustId(custId);
+		address = addressMgmtService.putData(address);
+		StateMachine<OrderStates, OrderEvents> paymentStateMachine = orderService.saveAddress(orderId);
+
+		return address;
+
+}
+	
+
+	
 
 	@RequestMapping(value = "/addItems", method = RequestMethod.POST, produces = { "application/json",
 			"application/xml" })

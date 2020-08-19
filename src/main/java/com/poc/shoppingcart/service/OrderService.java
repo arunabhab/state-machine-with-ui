@@ -120,6 +120,32 @@ public class OrderService {
 		sm.sendEvent(fulfillmentMessage);
 		return sm;
 	}
+	
+	public StateMachine<OrderStates, OrderEvents> saveCust(Long orderId){
+		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
+		
+		Message<OrderEvents> registrationMessage = MessageBuilder.withPayload(OrderEvents.REGISTER)
+											.setHeader(ORDER_ID_HEADER , orderId)
+											.build();
+		System.out.println("sm=====");
+		System.out.println(sm);
+
+		sm.sendEvent(registrationMessage);
+		return sm;
+	}
+	
+	public StateMachine<OrderStates, OrderEvents> saveAddress(Long orderId){
+		StateMachine<OrderStates, OrderEvents> sm = this.build(orderId);
+		
+		Message<OrderEvents> saveAddressMessage = MessageBuilder.withPayload(OrderEvents.SAVE_ADDRESS)
+											.setHeader(ORDER_ID_HEADER , orderId)
+											.build();
+		System.out.println("sm=====");
+		System.out.println(sm);
+
+		sm.sendEvent(saveAddressMessage);
+		return sm;
+	}
 	/*
 	 * public StateMachine<OrderStates, OrderEvents> checkOut(Long orderId){
 	 * StateMachine<OrderStates, OrderEvents> sm = this.build(orderId); //make sure

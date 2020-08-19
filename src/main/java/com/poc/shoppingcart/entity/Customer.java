@@ -35,6 +35,31 @@ public class Customer implements Serializable {
 	@Column (name = "CUST_NAME")
 	private String custName;
 
+	public Integer getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Integer custId) {
+		this.custId = custId;
+	}
+
+	public String getCustName() {
+		return custName;
+	}
+
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [custId=" + custId + ", custName=" + custName + "]";
+	}
 
 	public Customer(Integer custId, String custName) {
 		super();
@@ -42,37 +67,9 @@ public class Customer implements Serializable {
 		this.custName = custName;
 	}
 
-
 	public Customer() {
-		super();	}
-
-
-	public Integer getCustId() {
-		return custId;
 	}
 
-
-	public void setCustId(Integer custId) {
-		this.custId = custId;
-	}
-
-
-	public String getCustName() {
-		return custName;
-	}
-
-
-	public void setCustName(String custName) {
-		this.custName = custName;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Customer [custId=" + custId + ", custName=" + custName + "]";
-	}
-	
-	
 	
 	
 }

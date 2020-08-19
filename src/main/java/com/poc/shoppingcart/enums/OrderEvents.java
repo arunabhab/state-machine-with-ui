@@ -12,6 +12,8 @@ public enum OrderEvents {
 	
 	
 	SAVE_CART,
+	REGISTER,
+	SAVE_ADDRESS,
 	RETRIEVE,
 	UPDATE_CART,
 	PAY,
